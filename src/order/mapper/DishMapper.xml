@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="order.mapper.DishMapper" >
+  <resultMap id="BaseResultMap" type="order.pojo.Dish" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dishname" property="dishname" jdbcType="VARCHAR" />
+    <result column="dishtype" property="dishtype" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, dishname, dishtype, price, num
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dish
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from dish
+  </select>
+  <select id="selectByDishType" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select * from dish where dishtype = #{dishtype,jdbcType=VARCHAR}
+  </select>
+  <select id="queryDishByDishname" resultType="order.pojo.Dish" parameterType="java.lang.String">
+  	select * from dish where dishname like '%${value}%'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dish
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="order.pojo.Dish" >
+    insert into dish (id, dishname, dishtype, 
+      price, num)
+    values (#{id,jdbcType=INTEGER}, #{dishname,jdbcType=VARCHAR}, #{dishtype,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DOUBLE}, #{num,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="order.pojo.Dish" >
+    insert into dish
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dishname != null" >
+        dishname,
+      </if>
+      <if test="dishtype != null" >
+        dishtype,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dishname != null" >
+        #{dishname,jdbcType=VARCHAR},
+      </if>
+      <if test="dishtype != null" >
+        #{dishtype,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="order.pojo.Dish" >
+    update dish
+    <set >
+      <if test="dishname != null" >
+        dishname = #{dishname,jdbcType=VARCHAR},
+      </if>
+      <if test="dishtype != null" >
+        dishtype = #{dishtype,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="order.pojo.Dish" >
+    update dish
+    set dishname = #{dishname,jdbcType=VARCHAR},
+      dishtype = #{dishtype,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      num = #{num,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
